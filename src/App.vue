@@ -1,24 +1,40 @@
 <template>
   <v-app>
-    <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
+     <v-navigation-drawer temporary v-model="sideNav" v-show="sideNav" >
+      <v-list>
+        <v-list-tile
+          v-for="item in menuItems"
+          :key="item.title"
+          :to="item.link">
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>{{ item.title }}</v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+    <v-toolbar dark class="primary">
+      <v-toolbar-side-icon
+        @click.stop="sideNav = !sideNav"
+        class="hidden-sm-and-up "></v-toolbar-side-icon>
+      <v-toolbar-title>
+        <router-link to="/" tag="span" style="cursor: pointer">Event Hub</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn
-        flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <v-toolbar-items class="hidden-xs-only">
+        <v-btn
+          flat
+          v-for="item in menuItems"
+          :key="item.title"
+          :to="item.link">
+          <v-icon left dark>{{ item.icon }}</v-icon>
+          {{ item.title }}
+        </v-btn>
+      </v-toolbar-items>
     </v-toolbar>
-
-    <v-content>
-      <router-view/>
-    </v-content>
+    <main>
+      <router-view></router-view>
+    </main>
   </v-app>
 </template>
 
@@ -28,8 +44,18 @@ export default {
   name: 'App',
   data () {
     return {
-      //
+      sideNav: false,
+      menuItems: [
+        {icon: 'home', title: 'Home', link: '/'},
+        {icon: 'movie', title: 'Events', link: '/events'},
+        {icon: 'add_circle', title: 'Create Event', link:'/createevent'},
+        {icon: 'person', title: 'Login'}
+      ]
     }
   }
 }
 </script>
+
+<style lang="stylus">
+  @import './stylus/main'
+</style>
